@@ -1,2 +1,3 @@
 # ygodiy
- DIY expansion pack for ygocore
+ DIY expansion pack for ygocore. 
+ Illustration: 内向neet魔术师
