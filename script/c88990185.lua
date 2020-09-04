@@ -1,0 +1,95 @@
+--神星因士-神数之力
+function c88990185.initial_effect(c)
+	--pendulum summon
+	aux.EnablePendulumAttribute(c)
+	--splimit
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_FIELD)
+	e2:SetRange(LOCATION_PZONE)
+	e2:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)
+	e2:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_CANNOT_NEGATE)
+	e2:SetTargetRange(1,0)
+	e2:SetTarget(c88990185.splimit)
+	c:RegisterEffect(e2)
+	--spsummon
+	local e3=Effect.CreateEffect(c)
+	e3:SetCategory(CATEGORY_SPECIAL_SUMMON)
+	e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
+	e3:SetProperty(EFFECT_FLAG_DELAY)
+	e3:SetCode(EVENT_SUMMON_SUCCESS)
+	e3:SetCountLimit(1,88990185)
+	e3:SetTarget(c88990185.target)
+	e3:SetOperation(c88990185.operation)
+	c:RegisterEffect(e3)
+	local e4=e3:Clone()
+	e4:SetCode(EVENT_FLIP_SUMMON_SUCCESS)
+	c:RegisterEffect(e4)
+	local e5=e3:Clone()
+	e5:SetCode(EVENT_SPSUMMON_SUCCESS)
+	e5:SetCondition(c88990185.condition)
+	c:RegisterEffect(e5)
+end
+function c88990185.splimit(e,c,sump,sumtype,sumpos,targetp)
+	if c:IsSetCard(0x9c,0xc4) then return false end
+	return bit.band(sumtype,SUMMON_TYPE_PENDULUM)==SUMMON_TYPE_PENDULUM
+end
+function c88990185.condition(e,tp,eg,ep,ev,re,r,rp)
+	return e:GetHandler():IsSummonType(SUMMON_TYPE_PENDULUM)
+end
+function c88990185.spfilter(c,e,tp)
+	return c:IsSetCard(0x9c,0xc4) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+end
+function c88990185.target(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
+		and Duel.IsExistingMatchingCard(c88990185.spfilter,tp,LOCATION_DECK,0,1,nil,e,tp) end
+	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_DECK)
+end
+function c88990185.operation(e,tp,eg,ep,ev,re,r,rp)
+	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
+	local g=Duel.SelectMatchingCard(tp,c88990185.spfilter,tp,LOCATION_DECK,0,1,1,nil,e,tp)
+	local tc=g:GetFirst()
+	if tc and Duel.SpecialSummonStep(tc,0,tp,tp,false,false,POS_FACEUP) then
+		local c=e:GetHandler()
+		local e1=Effect.CreateEffect(c)
+		e1:SetType(EFFECT_TYPE_SINGLE)
+		e1:SetCode(EFFECT_DISABLE)
+		e1:SetReset(RESET_EVENT+RESETS_STANDARD-RESET_TOFIELD)
+		tc:RegisterEffect(e1)
+		local e2=Effect.CreateEffect(c)
+		e2:SetType(EFFECT_TYPE_SINGLE)
+		e2:SetCode(EFFECT_DISABLE_EFFECT)
+		e2:SetReset(RESET_EVENT+RESETS_STANDARD-RESET_TOFIELD)
+		tc:RegisterEffect(e2)
+		local e3=Effect.CreateEffect(c)
+		e3:SetType(EFFECT_TYPE_SINGLE)
+		e3:SetCode(EFFECT_SET_ATTACK)
+		e3:SetValue(0)
+		e3:SetReset(RESET_EVENT+RESETS_STANDARD-RESET_TOFIELD)
+		tc:RegisterEffect(e3)
+		local e4=Effect.CreateEffect(c)
+		e4:SetType(EFFECT_TYPE_SINGLE)
+		e4:SetCode(EFFECT_SET_DEFENSE)
+		e4:SetValue(0)
+		e4:SetReset(RESET_EVENT+RESETS_STANDARD-RESET_TOFIELD)
+		tc:RegisterEffect(e4)
+		local e5=Effect.CreateEffect(c)
+		e5:SetType(EFFECT_TYPE_SINGLE)
+		e5:SetCode(EFFECT_LEAVE_FIELD_REDIRECT)
+		e5:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
+		e5:SetReset(RESET_EVENT+RESETS_REDIRECT)
+		e5:SetValue(LOCATION_REMOVED)
+		tc:RegisterEffect(e5,true)
+	end
+	Duel.SpecialSummonComplete()
+	local e5=Effect.CreateEffect(e:GetHandler())
+	e5:SetType(EFFECT_TYPE_FIELD)
+	e5:SetCode(EFFECT_CANNOT_ATTACK)
+	e5:SetTargetRange(LOCATION_MZONE,0)
+	e5:SetTarget(c88990185.atktg)
+	e5:SetReset(RESET_PHASE+PHASE_END)
+	Duel.RegisterEffect(e5,tp)
+end
+function c88990185.atktg(e,c)
+	return not c:IsSetCard(0x9c,0xc4)
+end
