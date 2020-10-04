@@ -1,5 +1,4 @@
 --侵略的泛发袭击
---need testing
 function c88990222.initial_effect(c)
 	--Activate
 	local e1=Effect.CreateEffect(c)
@@ -15,7 +14,6 @@ end
 function c88990222.condition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetFieldGroupCount(tp,0,LOCATION_MZONE)>0 and Duel.GetFieldGroupCount(tp,LOCATION_MZONE,0)==0
 end
-
 function c88990222.filter(c,e,tp)
 	return c:IsSetCard(0xa) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
@@ -34,7 +32,6 @@ function c88990222.target(e,tp,eg,ep,ev,re,r,rp,chk)
 		and mg:CheckSubGroup(c88990222.fgoal,2,2,exg) end
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,2,tp,LOCATION_GRAVE+LOCATION_DECK)
 end
-
 function c88990222.activate(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.IsPlayerAffectedByEffect(tp,59822133) then return end
 	local mg=Duel.GetMatchingGroup(aux.NecroValleyFilter(c88990222.filter),tp,LOCATION_GRAVE+LOCATION_DECK,0,nil,e,tp)
