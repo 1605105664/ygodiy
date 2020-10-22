@@ -64,15 +64,15 @@ end
 function c88990207.thfilter(c)
 	return bit.band(c:GetType(),0x281)==0x281 and c:IsAbleToHand()
 end
+function c88990207.thfilter2(c)
+	return not c:IsCode(88990207) and bit.band(c:GetType(),0x82)==0x82 and c:IsAbleToHand()
+end
 function c88990207.thtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and chkc:IsControler(tp) and c88990207.thfilter(chkc) end
-	if chk==0 then return Duel.IsExistingTarget(c88990207.thfilter,tp,LOCATION_GRAVE,0,1,nil) end
+	if chk==0 then return Duel.IsExistingTarget(c88990207.thfilter,tp,LOCATION_GRAVE,0,1,nil) and Duel.IsExistingTarget(c88990207.thfilter2,tp,LOCATION_DECK,0,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
 	local g=Duel.SelectTarget(tp,c88990207.thfilter,tp,LOCATION_GRAVE,0,1,1,nil)
 	Duel.SetOperationInfo(0,CATEGORY_TOHAND,g,1,0,0)
-end
-function c88990207.thfilter2(c)
-	return not c:IsCode(88990207) and bit.band(c:GetType(),0x82)==0x82 and c:IsAbleToHand()
 end
 function c88990207.thop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
