@@ -10,7 +10,7 @@ function c88990261.initial_effect(c)
 	e1:SetTarget(c88990261.rettg)
 	e1:SetOperation(c88990261.retop)
 	c:RegisterEffect(e1)
-	--recycle
+	--spsummon
 	local e2=Effect.CreateEffect(c)
 	e2:SetCategory(CATEGORY_SEARCH+CATEGORY_SPECIAL_SUMMON)
 	e2:SetType(EFFECT_TYPE_IGNITION)
