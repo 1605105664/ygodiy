@@ -37,7 +37,7 @@ function c88990210.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 function c88990210.atkfilter(c)
-	return c:IsSetCard(0x107)
+	return c:IsSetCard(0x107) and c:GetOriginalType()&TYPE_MONSTER==TYPE_MONSTER
 end
 function c88990210.atkval(e,c)
 	local g=e:GetHandler():GetOverlayGroup():Filter(c88990210.atkfilter,nil)

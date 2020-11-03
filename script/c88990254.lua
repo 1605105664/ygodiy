@@ -23,7 +23,7 @@ function c88990254.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 function c88990254.atkfilter(c)
-	return c:IsSetCard(0x7b) or c:IsSetCard(0x55)
+	return c:IsSetCard(0x7b) or c:IsSetCard(0x55) and c:GetOriginalType()&TYPE_MONSTER==TYPE_MONSTER
 end
 function c88990254.raval(e,c)
 	return e:GetHandler():GetOverlayGroup():FilterCount(c88990254.atkfilter,nil)
