@@ -20,8 +20,9 @@ function c88990182.target(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function c88990182.operation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-	local g=Duel.SelectMatchingCard(tp,c88990182.spfilter,tp,LOCATION_DECK+LOCATION_EXTRA,0,1,1,nil,e,tp)
-	if g:GetCount()>0 then
-		Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
+	local tg=Duel.SelectMatchingCard(tp,c88990182.spfilter,tp,LOCATION_DECK+LOCATION_EXTRA,0,1,1,nil,e,tp):GetFirst()
+	if Duel.SpecialSummon(tg,0,tp,tp,false,false,POS_FACEUP)>0 and tg:IsType(TYPE_XYZ) then
+		e:GetHandler():CancelToGrave()
+		Duel.Overlay(tg,e:GetHandler())
 	end
 end
